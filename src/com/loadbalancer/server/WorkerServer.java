@@ -2,6 +2,9 @@ package com.loadbalancer.server;
 import java.net.*;
 import java.io.*;
 
+// Will have access to some kind of lyrics file structure where lyrics can be searched within the server
+// The servers will all have a replica of this such that they can all process requests
+// Consistency is an issue here => perhaps out of scope for this project
 public class WorkerServer {
     private int port;
     private Boolean isRunning;
@@ -21,17 +24,15 @@ public class WorkerServer {
     }
     
     public void ServerLoop() {
-
         while (isRunning) {
-
             // try accepting a new connection (for now its always assumed its the load balancer)
             try {
                 loadBalancerSocket = serverSocket.accept();
             }
             catch (Exception ex) {
-
+                System.out.println(ex.getMessage());
             }
-
+            
             System.out.println("Load balancer connected");
 
             try (BufferedReader in = new BufferedReader(new InputStreamReader(loadBalancerSocket.getInputStream()));
